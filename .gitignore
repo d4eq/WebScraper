@@ -1,0 +1,6 @@
+.idea/
+/target/
+/*.iml
+/*.log
+/ceneo-list-output.xml
+/src/test/resources/output.xml

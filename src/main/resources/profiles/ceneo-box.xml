@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Selector>
+    <pagination>a.pagination-next</pagination>
+    <element>category-item-box</element>
+    <name>strong.category-item-box-name > a</name>
+    <minimalPrice>span.price</minimalPrice>
+    <imageUrl>div.category-item-box-picture > a > img</imageUrl>
+</Selector>
