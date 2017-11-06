@@ -15,7 +15,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void shouldValidCorrectlyUrl() {
+    public void shouldValidCorrectUrl() {
         assertTrue(validator.isValidUrl("http://www.test.com"));
         assertTrue(validator.isValidUrl("https://www.test.com"));
         assertTrue(validator.isValidUrl("http://www.test.com/index.htm"));
@@ -23,7 +23,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void shouldInvalidCorrectlyUrl() {
+    public void shouldNotValidIncorrectUrl() {
         assertFalse(validator.isValidUrl("www"));
         assertFalse(validator.isValidUrl("www.test"));
         assertFalse(validator.isValidUrl("http://"));

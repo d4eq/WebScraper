@@ -22,24 +22,38 @@ public class JsoupScraperTest {
         DocumentFetcher documentFetcher = mock(DocumentFetcher.class);
         when(documentFetcher.fetchDocument(anyString())).thenReturn(Optional.of(document));
         jsoupScraper = new JsoupScraper(documentFetcher);
-        jsoupScraper.initScraper(anyString(),"element", "a.pagination-next");
+        jsoupScraper.initScraper(anyString(), "element", "a.pagination-next");
     }
 
     @Test
-    public void shouldInitCorrectly()  {
-        assertThat(jsoupScraper.getElementsKeys().size(), is(2));
-        assertEquals("http://www.test.com/page2.htm", jsoupScraper.getNextPageUrl());
+    public void shouldInitElementsMap() {
+        // when
+        int elementMapSize = jsoupScraper.getElementsKeys().size();
+        // then
+        assertThat(elementMapSize, is(2));
     }
 
     @Test
-    public void shouldScrapeCorrectlyTextBySelector()  {
-        assertEquals("name11",
-                jsoupScraper.scrapeTextBySelector(0, "strong.name"));
+    public void shouldInitNextPageUrl() {
+        // when
+        String nextPageUrl = jsoupScraper.getNextPageUrl();
+        // then
+        assertEquals("http://www.test.com/page2.htm", nextPageUrl);
     }
 
     @Test
-    public void shouldScrapeCorrectlyAttributeBySelector()  {
-        assertEquals("//www.test.com/image11.jpg",
-                jsoupScraper.scrapeAttributeBySelector(0, "div.image > img","src"));
+    public void shouldScrapeTextBySelector() {
+        // when
+        String textBySelector = jsoupScraper.scrapeTextBySelector(0, "strong.name");
+        // then
+        assertEquals("name11", textBySelector);
+    }
+
+    @Test
+    public void shouldScrapeAttributeBySelector() {
+        //when
+        String attributeBySelector = jsoupScraper.scrapeAttributeBySelector(0, "div.image > img", "src");
+        // then
+        assertEquals("//www.test.com/image11.jpg", attributeBySelector);
     }
 }

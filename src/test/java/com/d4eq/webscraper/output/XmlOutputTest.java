@@ -16,17 +16,21 @@ import static org.junit.Assert.*;
 public class XmlOutputTest {
 
     @Test
-    public void shouldSaveCorrectlyItemsToXmlFile() throws IOException {
+    public void shouldSaveItemsToXmlFile() throws IOException {
+        // given
         List<Item> expectedItems = new ArrayList<>(Arrays.asList(
                 new Item("name1", new BigDecimal("1.1"), "image1="),
                 new Item("name2", new BigDecimal("1.2"), "image2="),
                 new Item("name3", new BigDecimal("1.3"), "image3=")
         ));
-        File outputFile = new File("src/test/resources/output.xml");
 
+        File outputFile = new File("src/test/resources/output.xml");
         XmlOutput xmlOutput = new XmlOutput();
+
+        // when
         xmlOutput.saveItems(expectedItems, outputFile);
 
+        // then
         XmlMapper xmlMapper = new XmlMapper();
         JavaType javaType = xmlMapper.getTypeFactory().constructCollectionType(ArrayList.class, Item.class);
         List<Item> actualItem = xmlMapper.readValue(outputFile, javaType);

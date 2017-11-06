@@ -19,60 +19,82 @@ public class CliParserTest {
     }
 
     @Test(expected = UnrecognizedOptionException.class)
-    public void shouldUnrecognizedOption() throws ParseException {
+    public void shouldUsageUnrecognizedOption() throws ParseException {
+        // given
         String[] args = { "-b" };
+        // when
         cliParser.parse(args);
     }
 
     @Test
-    public void shouldGetCorrectlyUrlOption() throws ParseException {
+    public void shouldUsageCorrectUrlOption() throws ParseException {
+        // given
         String[] args = { "-uhttp://www.test.com" };
+        // when
         Map<String, String> parsedArgs = cliParser.parse(args);
+        // then
         assertEquals("http://www.test.com", parsedArgs.get("url"));
     }
 
     @Test(expected = ParseException.class)
-    public void shouldGetMissingUrlOption() throws ParseException {
+    public void shouldUsageMissingUrlOption() throws ParseException {
+        // given
         String[] args = { "" };
+        // when
         cliParser.parse(args);
     }
 
     @Test(expected = MissingArgumentException.class)
-    public void shouldGetMissingArgumentUrlOption() throws ParseException {
+    public void shouldUsageMissingArgumentUrlOption() throws ParseException {
+        // given
         String[] args = { "-u" };
+        // when
         cliParser.parse(args);
     }
 
     @Test
-    public void shouldGetCorrectlyDebugAndRequiredUrlOption() throws ParseException {
+    public void shouldUsageCorrectDebugAndRequiredUrlOption() throws ParseException {
+        // given
         String[] args = { "-d", "-uhttp://www.test.com" };
+        // when
         Map<String, String> parsedArgs = cliParser.parse(args);
+        // then
         assertEquals("", parsedArgs.get("debug"));
     }
 
     @Test
-    public void shouldGetCorrectlyProfileAndRequiredUrlOption() throws ParseException {
+    public void shouldUsageCorrectProfileAndRequiredUrlOption() throws ParseException {
+        // given
         String[] args = { "-pceneo", "-uhttp://www.test.com" };
+        // when
         Map<String, String> parsedArgs = cliParser.parse(args);
+        // then
         assertEquals("ceneo", parsedArgs.get("profile"));
     }
 
     @Test(expected = MissingArgumentException.class)
-    public void shouldGetMissingArgumentProfileAndRequiredUrlOption() throws ParseException {
+    public void shouldUsageMissingArgumentProfileAndRequiredUrlOption() throws ParseException {
+        // given
         String[] args = { "-p", "-uhttp://www.test.com" };
+        // when
         cliParser.parse(args);
     }
 
     @Test
-    public void shouldGetCorrectlyOutputTypeAndRequiredUrlOption() throws ParseException {
+    public void shouldUsageCorrectOutputTypeAndRequiredUrlOption() throws ParseException {
+        // given
         String[] args = { "-txml", "-uhttp://www.test.com" };
+        // when
         Map<String, String> parsedArgs = cliParser.parse(args);
+        // then
         assertEquals("xml", parsedArgs.get("outputType"));
     }
 
     @Test(expected = MissingArgumentException.class)
-    public void shouldGetMissingArgumentOutputTypeAndRequiredUrlOption() throws ParseException {
+    public void shouldUsageMissingArgumentOutputTypeAndRequiredUrlOption() throws ParseException {
+        // given
         String[] args = { "-t", "-uhttp://www.test.com" };
+        // when
         cliParser.parse(args);
     }
 }

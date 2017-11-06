@@ -51,9 +51,11 @@ public class CeneoInputTest {
     }
 
     @Test
-    public void shouldGetCorrectlyItems()  {
+    public void shouldGetItems()  {
+        // when
         List<Item> items = ceneoInput.getItems(url1);
 
+        // then
         assertThat(items.size(), is(4));
 
         assertEquals("name11", items.get(0).getName());

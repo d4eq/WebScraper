@@ -10,15 +10,19 @@ import static org.mockito.Mockito.*;
 public class ImageToBase64ConverterTest {
 
     @Test
-    public void shouldConvertCorrectlyImageToBase64() {
+    public void shouldConvertImageToBase64() {
+        // given
         Downloader downloader = mock(Downloader.class);
         Encoder encoder = mock(Encoder.class);
 
         when(downloader.downloadAsByteArray(anyString())).thenReturn(new byte[5]);
         when(encoder.encode(new byte[5])).thenReturn("AAAAAAA=");
 
+        // when
         ImageToBase64Converter converter = new ImageToBase64Converter(downloader, encoder);
+        String converted = converter.convert(anyString());
 
-        assertEquals("AAAAAAA=", converter.convert(anyString()));
+        // then
+        assertEquals("AAAAAAA=", converted);
     }
 }
