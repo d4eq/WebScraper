@@ -1,6 +1,14 @@
 # WebScraper
 This is an example Maven project written in Java 8.
-# Options
+## Technology stack
+* Jsoup 1.10.3
+* HttpClient 4.5.3
+* Commons CLI 1.4
+* Log4j 4.5.3
+* JUnit 4.12
+* Mockito 2.9.0
+* Maven 3.3.9
+## Options
 <pre>
 usage: webscraper
  -d,--debug      debug mode
