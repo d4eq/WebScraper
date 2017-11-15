@@ -3,8 +3,6 @@ package com.d4eq.webscraper.reader;
 import com.d4eq.webscraper.model.Selector;
 import org.junit.Test;
 
-import java.io.File;
-
 import static org.junit.Assert.*;
 
 public class XmlReaderTest {
@@ -12,9 +10,9 @@ public class XmlReaderTest {
     @Test
     public void shouldReadSelector() {
         // given
-        Selector expectedSelector = new Selector("p","e","n","mp","iu");
+        Selector expectedSelector = new Selector("p", "e", "n", "mp", "iu");
 
-        File testXml = new File("src/test/resources/selector-test.xml");
+        String testXml = "/selector-test.xml";
         XmlReader xmlReader = new XmlReader();
 
         // when

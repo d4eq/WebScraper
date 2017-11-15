@@ -46,9 +46,9 @@ public class WebScraper {
 
         Validator validator = new Validator();
         if (validator.isValidUrl(args.get("url"))) {
-            String profile = setDefaultProfile(args.get("profile"));
-            String outputType = setDefaultOutputType(args.get("outputType"));
-            File outputFile = setOutputFile(profile);
+            String profile = setProfile(args.get("profile"));
+            String outputType = setOutputType(args.get("outputType"));
+            File outputFile = setOutputFile(profile, outputType);
 
             Scraper scraper = getScraper();
             Selector selector = getSelector(profile);
@@ -67,11 +67,11 @@ public class WebScraper {
         Configurator.setRootLevel(Level.DEBUG);
     }
 
-    private String setDefaultProfile(String profile) {
+    private String setProfile(String profile) {
         return profile.isEmpty() ? "ceneo-list" : profile;
     }
 
-    private String setDefaultOutputType(String outputType) {
+    private String setOutputType(String outputType) {
         return outputType.isEmpty() ? "xml" : outputType;
     }
 
@@ -91,8 +91,8 @@ public class WebScraper {
 
     private Selector getSelector(String profile) {
         XmlReader xmlReader = new XmlReader();
-        File profileXml = setProfileFile(profile);
-        return xmlReader.mapObjectFromXml(profileXml);
+        String resourceName = setResourceName(profile);
+        return xmlReader.mapObjectFromXml(resourceName);
     }
 
     private Converter getConverter() {
@@ -112,11 +112,11 @@ public class WebScraper {
     }
 
 
-    private File setProfileFile(String profile) {
-        return new File("/profiles/" + profile + ".xml");
+    private String setResourceName(String profile) {
+        return "/profiles/" + profile + ".xml";
     }
 
-    private File setOutputFile(String profile) {
-        return new File(profile + "-output.xml");
+    private File setOutputFile(String profile, String outputType) {
+        return new File(profile + "-output." + outputType);
     }
 }

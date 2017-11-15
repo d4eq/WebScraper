@@ -6,15 +6,16 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class XmlReader {
     private final Logger logger = LogManager.getLogger(XmlReader.class);
-    public Selector mapObjectFromXml(File profileXml) {
+
+    public Selector mapObjectFromXml(String resourceName) {
         ObjectMapper xmlMapper = new XmlMapper();
-        try {
-            return xmlMapper.readValue(profileXml, Selector.class);
+        try (InputStream is = getClass().getResourceAsStream(resourceName)) {
+            return xmlMapper.readValue(is, Selector.class);
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
