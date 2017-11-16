@@ -92,9 +92,8 @@ public class WebScraper {
     }
 
     private Optional<Selector> getSelector() {
-        String profile = getProfile();
         XmlReader xmlReader = new XmlReader();
-        String resourceName = getResourceName(profile);
+        String resourceName = getResourceName();
         return xmlReader.mapObjectFromXml(resourceName);
     }
 
@@ -138,7 +137,8 @@ public class WebScraper {
         return args.get("outputType").isEmpty() ? "xml" : args.get("outputType");
     }
 
-    private String getResourceName(String profile) {
+    private String getResourceName() {
+        String profile = getProfile();
         return "/profiles/" + profile + ".xml";
     }
 
