@@ -24,60 +24,62 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public class WebScraper {
     private final Logger logger = LogManager.getLogger(WebScraper.class);
+    Map<String, String> args = new HashMap<>();
 
     public void cliParse(String[] args) {
         CliParser cliParser = new CliParser();
         try {
-            init(cliParser.parse(args));
+            this.args = cliParser.parse(args);
         } catch (ParseException e) {
             logger.error(e.getMessage());
+            System.exit(1);
         }
     }
 
-    private void init(Map<String, String> args) {
-        if(args.containsKey("debug")) {
+    public void init() {
+        if (args.containsKey("debug")) {
             setDebugMode();
         }
 
         Validator validator = new Validator();
         if (validator.isValidUrl(args.get("url"))) {
-            String profile = setProfile(args.get("profile"));
-            String outputType = setOutputType(args.get("outputType"));
-            File outputFile = setOutputFile(profile, outputType);
-
-            Scraper scraper = getScraper();
-            Converter converter = getConverter();
-            getSelector(profile).ifPresent(selector -> {
-                Input input = getInput(profile, scraper, selector, converter);
-                Output output = getOutput(outputType);
-                run(args.get("url"), input, output, outputFile);
-            });
+            initSelector();
         } else {
             logger.error("Invalid URL: {}", args.get("url"));
         }
     }
 
-    private void setDebugMode() {
-        Configurator.setRootLevel(Level.DEBUG);
+    private void initSelector() {
+        getSelector().ifPresent(selector -> {
+            initInput(selector);
+        });
     }
 
-    private String setProfile(String profile) {
-        return profile.isEmpty() ? "ceneo-list" : profile;
+    private void initInput(Selector selector) {
+        Scraper scraper = getScraper();
+        Converter converter = getConverter();
+        getInput(scraper, selector, converter).ifPresent(input -> {
+            initOutput(input);
+        });
     }
 
-    private String setOutputType(String outputType) {
-        return outputType.isEmpty() ? "xml" : outputType;
+    private void initOutput(Input input) {
+        getOutput().ifPresent(output -> {
+            run(input, output);
+        });
     }
 
-    private void run(String url, Input input, Output output, File outputFile) {
-        List<Item> items = input.getItems(url);
+    private void run(Input input, Output output) {
+        List<Item> items = input.getItems(args.get("url"));
         if (items.size() > 0) {
+            File outputFile = getOutputFile();
             output.saveItems(items, outputFile);
         } else {
             logger.info("No items");
@@ -89,9 +91,10 @@ public class WebScraper {
         return new JsoupScraper(documentFetcher);
     }
 
-    private Optional<Selector> getSelector(String profile) {
+    private Optional<Selector> getSelector() {
+        String profile = getProfile();
         XmlReader xmlReader = new XmlReader();
-        String resourceName = setResourceName(profile);
+        String resourceName = getResourceName(profile);
         return xmlReader.mapObjectFromXml(resourceName);
     }
 
@@ -101,22 +104,47 @@ public class WebScraper {
         return new ImageToBase64Converter(downloader, encoder);
     }
 
-    private Input getInput(String profile, Scraper scraper, Selector selector, Converter converter) {
+    private Optional<Input> getInput(Scraper scraper, Selector selector, Converter converter) {
         InputFactory inputFactory = new InputFactory();
-        return inputFactory.createInput(profile, scraper, selector, converter);
+        String profile = getProfile();
+        try {
+            return Optional.of(inputFactory.createInput(profile, scraper, selector, converter));
+        } catch (IllegalArgumentException e) {
+            logger.error(e.getMessage());
+            return Optional.empty();
+        }
     }
 
-    private Output getOutput(String outputType) {
+    private Optional<Output> getOutput() {
         OutputFactory outputFactory = new OutputFactory();
-        return outputFactory.createOutput(outputType);
+        String outputType = getOutputType();
+        try {
+            return Optional.of(outputFactory.createOutput(outputType));
+        } catch (IllegalArgumentException e) {
+            logger.error(e.getMessage());
+            return Optional.empty();
+        }
     }
 
+    private void setDebugMode() {
+        Configurator.setRootLevel(Level.DEBUG);
+    }
 
-    private String setResourceName(String profile) {
+    private String getProfile() {
+        return args.get("profile").isEmpty() ? "ceneo-list" : args.get("profile");
+    }
+
+    private String getOutputType() {
+        return args.get("outputType").isEmpty() ? "xml" : args.get("outputType");
+    }
+
+    private String getResourceName(String profile) {
         return "/profiles/" + profile + ".xml";
     }
 
-    private File setOutputFile(String profile, String outputType) {
+    private File getOutputFile() {
+        String profile = getProfile();
+        String outputType = getOutputType();
         return new File(profile + "-output." + outputType);
     }
 }

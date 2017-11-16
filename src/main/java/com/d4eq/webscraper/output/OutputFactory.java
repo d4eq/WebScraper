@@ -5,7 +5,7 @@ public class OutputFactory {
         if (outputType.equalsIgnoreCase("xml")) {
             return new XmlOutput();
         } else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid output file type: " + outputType);
         }
     }
 }

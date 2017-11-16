@@ -9,7 +9,7 @@ public class InputFactory {
         if (inputType.equalsIgnoreCase("ceneo-list") || inputType.equalsIgnoreCase("ceneo-box")) {
             return new CeneoInput(scraper, selector, converter);
         } else {
-            return new GenericInput(scraper, selector, converter);
+            throw new IllegalArgumentException("Invalid input case: " + inputType);
         }
     }
 }
