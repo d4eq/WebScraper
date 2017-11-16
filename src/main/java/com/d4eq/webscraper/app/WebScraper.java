@@ -26,6 +26,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class WebScraper {
     private final Logger logger = LogManager.getLogger(WebScraper.class);
@@ -51,13 +52,12 @@ public class WebScraper {
             File outputFile = setOutputFile(profile, outputType);
 
             Scraper scraper = getScraper();
-            Selector selector = getSelector(profile);
             Converter converter = getConverter();
-
-            Input input = getInput(profile, scraper, selector, converter);
-            Output output = getOutput(outputType);
-
-            run(args.get("url"), input, output, outputFile);
+            getSelector(profile).ifPresent(selector -> {
+                Input input = getInput(profile, scraper, selector, converter);
+                Output output = getOutput(outputType);
+                run(args.get("url"), input, output, outputFile);
+            });
         } else {
             logger.error("Invalid URL: {}", args.get("url"));
         }
@@ -89,7 +89,7 @@ public class WebScraper {
         return new JsoupScraper(documentFetcher);
     }
 
-    private Selector getSelector(String profile) {
+    private Optional<Selector> getSelector(String profile) {
         XmlReader xmlReader = new XmlReader();
         String resourceName = setResourceName(profile);
         return xmlReader.mapObjectFromXml(resourceName);

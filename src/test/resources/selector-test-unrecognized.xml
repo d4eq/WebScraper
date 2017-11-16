@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Selector>
+    <unrecognizedFild>p</unrecognizedFild>
+    <element>e</element>
+    <name>n</name>
+    <minimalPrice>mp</minimalPrice>
+    <imageUrl>iu</imageUrl>
+</Selector>

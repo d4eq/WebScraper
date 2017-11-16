@@ -8,17 +8,20 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 
 public class XmlReader {
     private final Logger logger = LogManager.getLogger(XmlReader.class);
 
-    public Selector mapObjectFromXml(String resourceName) {
+    public Optional<Selector> mapObjectFromXml(String resourceName) {
         ObjectMapper xmlMapper = new XmlMapper();
         try (InputStream is = getClass().getResourceAsStream(resourceName)) {
-            return xmlMapper.readValue(is, Selector.class);
-        } catch (IOException e) {
+            return Optional.ofNullable(xmlMapper.readValue(is, Selector.class));
+        } catch (IllegalArgumentException e) {
+            logger.error("Profile '" + resourceName + "' is not found");
+        } catch (IOException  e) {
             logger.error(e.getMessage());
         }
-        return null;
+        return Optional.empty();
     }
 }
