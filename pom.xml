@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.d4eq.webscraper</groupId>
-    <artifactId>WebScraper</artifactId>
+    <groupId>com.d4ptak.webscraper</groupId>
+    <artifactId>webscraper</artifactId>
     <version>1.0</version>
     <description>Web pages scraper</description>
     <packaging>jar</packaging>
@@ -121,7 +121,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.d4eq.webscraper.app.WebScraperApp</mainClass>
+                            <mainClass>com.d4ptak.webscraper.app.WebScraperApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

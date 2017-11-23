@@ -15,11 +15,11 @@ This is an example Maven project written in Java 8.
 * Save the website scraped data as xml file
 ## Install / Usage
 ```
-        git clone https://github.com/d4eq/WebScraper.git
-        cd WebScraper
+        git clone https://github.com/d4ptak/webscraper.git
+        cd webscraper
         mvn clean install
         cd target
-        java -jar WebScraper-1.0.jar -u https://www.ceneo.pl/Filmy_Blu-ray/Gatunek:Sensacyjne;m80;n100.htm
+        java -jar webscraper-1.0.jar -u https://www.ceneo.pl/Filmy_Blu-ray/Gatunek:Sensacyjne;m80;n100.htm
 ```
 ## Options
 ```
