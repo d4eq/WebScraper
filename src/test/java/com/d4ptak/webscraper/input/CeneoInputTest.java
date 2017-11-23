@@ -22,8 +22,8 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class CeneoInputTest {
-    private final String url1 = "http://www.test.com/page1.htm";
-    private final String url2 = "http://www.test.com/page2.htm";
+    private static final String URL_1 = "http://www.test.com/page1.htm";
+    private static final String URL_2 = "http://www.test.com/page2.htm";
     private CeneoInput ceneoInput;
 
     @Before
@@ -32,8 +32,8 @@ public class CeneoInputTest {
         Document document2 = Jsoup.parse(new File("src/test/resources/ceneo2.html"), "utf-8");
 
         DocumentFetcher documentFetcher = mock(DocumentFetcher.class);
-        when(documentFetcher.fetchDocument(url1)).thenReturn(Optional.of(document1));
-        when(documentFetcher.fetchDocument(url2)).thenReturn(Optional.of(document2));
+        when(documentFetcher.fetchDocument(URL_1)).thenReturn(Optional.of(document1));
+        when(documentFetcher.fetchDocument(URL_2)).thenReturn(Optional.of(document2));
 
         Scraper scraper = new JsoupScraper(documentFetcher);
 
@@ -53,7 +53,7 @@ public class CeneoInputTest {
     @Test
     public void shouldGetItems()  {
         // when
-        List<Item> items = ceneoInput.getItems(url1);
+        List<Item> items = ceneoInput.getItems(URL_1);
 
         // then
         assertThat(items.size(), is(4));

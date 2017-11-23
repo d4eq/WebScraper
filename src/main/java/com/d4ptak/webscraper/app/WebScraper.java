@@ -29,9 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class WebScraper {
+class WebScraper {
     private final Logger logger = LogManager.getLogger(WebScraper.class);
-    Map<String, String> args = new HashMap<>();
+    private Map<String, String> args = new HashMap<>();
 
     public void cliParse(String[] args) {
         CliParser cliParser = new CliParser();
@@ -57,23 +57,17 @@ public class WebScraper {
     }
 
     private void initSelector() {
-        getSelector().ifPresent(selector -> {
-            initInput(selector);
-        });
+        getSelector().ifPresent(this::initInput);
     }
 
     private void initInput(Selector selector) {
         Scraper scraper = getScraper();
         Converter converter = getConverter();
-        getInput(scraper, selector, converter).ifPresent(input -> {
-            initOutput(input);
-        });
+        getInput(scraper, selector, converter).ifPresent(this::initOutput);
     }
 
     private void initOutput(Input input) {
-        getOutput().ifPresent(output -> {
-            run(input, output);
-        });
+        getOutput().ifPresent(output -> run(input, output));
     }
 
     private void run(Input input, Output output) {
